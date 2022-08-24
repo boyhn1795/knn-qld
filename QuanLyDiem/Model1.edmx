@@ -1,0 +1,317 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="QLDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="tblDiem">
+          <Key>
+            <PropertyRef Name="Mamon" />
+            <PropertyRef Name="MaSV" />
+          </Key>
+          <Property Name="Mamon" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="MaSV" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Diem" Type="nvarchar" MaxLength="11" />
+        </EntityType>
+        <EntityType Name="tblKhoa">
+          <Key>
+            <PropertyRef Name="Makhoa" />
+          </Key>
+          <Property Name="Makhoa" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Tenkhoa" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblMonHoc">
+          <Key>
+            <PropertyRef Name="Mamon" />
+          </Key>
+          <Property Name="Mamon" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Tenmon" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Makhoa" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Sohocphan" Type="int" Nullable="false" />
+          <Property Name="Giaovien" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblSinhVien">
+          <Key>
+            <PropertyRef Name="MaSV" />
+          </Key>
+          <Property Name="MaSV" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Hoten" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Ngaysinh" Type="date" Nullable="false" />
+          <Property Name="Noisinh" Type="nvarchar" MaxLength="100" />
+          <Property Name="Gioitinh" Type="nvarchar" MaxLength="10" />
+          <Property Name="Diachi" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Makhoa" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_tblDiem_tblMonHoc">
+          <End Role="tblMonHoc" Type="Self.tblMonHoc" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblDiem" Type="Self.tblDiem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMonHoc">
+              <PropertyRef Name="Mamon" />
+            </Principal>
+            <Dependent Role="tblDiem">
+              <PropertyRef Name="Mamon" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblDiem_tblSinhVien">
+          <End Role="tblSinhVien" Type="Self.tblSinhVien" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblDiem" Type="Self.tblDiem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSinhVien">
+              <PropertyRef Name="MaSV" />
+            </Principal>
+            <Dependent Role="tblDiem">
+              <PropertyRef Name="MaSV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblSinhVien_tblKhoa">
+          <End Role="tblKhoa" Type="Self.tblKhoa" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblSinhVien" Type="Self.tblSinhVien" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblKhoa">
+              <PropertyRef Name="Makhoa" />
+            </Principal>
+            <Dependent Role="tblSinhVien">
+              <PropertyRef Name="Makhoa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLDModelStoreContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblDiem" EntityType="Self.tblDiem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblKhoa" EntityType="Self.tblKhoa" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblMonHoc" EntityType="Self.tblMonHoc" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblSinhVien" EntityType="Self.tblSinhVien" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tblDiem_tblMonHoc" Association="Self.FK_tblDiem_tblMonHoc">
+            <End Role="tblMonHoc" EntitySet="tblMonHoc" />
+            <End Role="tblDiem" EntitySet="tblDiem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblDiem_tblSinhVien" Association="Self.FK_tblDiem_tblSinhVien">
+            <End Role="tblSinhVien" EntitySet="tblSinhVien" />
+            <End Role="tblDiem" EntitySet="tblDiem" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblSinhVien_tblKhoa" Association="Self.FK_tblSinhVien_tblKhoa">
+            <End Role="tblKhoa" EntitySet="tblKhoa" />
+            <End Role="tblSinhVien" EntitySet="tblSinhVien" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QLDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="tblKhoa">
+          <Key>
+            <PropertyRef Name="Makhoa" />
+          </Key>
+          <Property Name="Makhoa" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Tenkhoa" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tblSinhViens" Relationship="Self.FK_tblSinhVien_tblKhoa" FromRole="tblKhoa" ToRole="tblSinhVien" />
+        </EntityType>
+        <EntityType Name="tblMonHoc">
+          <Key>
+            <PropertyRef Name="Mamon" />
+          </Key>
+          <Property Name="Mamon" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Tenmon" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Makhoa" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Sohocphan" Type="Int32" Nullable="false" />
+          <Property Name="Giaovien" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblDiems" Relationship="QLDModel.FK_tblDiem_tblMonHoc" FromRole="tblMonHoc" ToRole="tblDiem" />
+        </EntityType>
+        <EntityType Name="tblSinhVien">
+          <Key>
+            <PropertyRef Name="MaSV" />
+          </Key>
+          <Property Name="MaSV" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Hoten" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Ngaysinh" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Noisinh" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Gioitinh" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Diachi" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Makhoa" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="tblKhoa" Relationship="Self.FK_tblSinhVien_tblKhoa" FromRole="tblSinhVien" ToRole="tblKhoa" />
+          <NavigationProperty Name="tblDiems" Relationship="QLDModel.FK_tblDiem_tblSinhVien" FromRole="tblSinhVien" ToRole="tblDiem" />
+        </EntityType>
+        <Association Name="FK_tblSinhVien_tblKhoa">
+          <End Role="tblKhoa" Type="Self.tblKhoa" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblSinhVien" Type="Self.tblSinhVien" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblKhoa">
+              <PropertyRef Name="Makhoa" />
+            </Principal>
+            <Dependent Role="tblSinhVien">
+              <PropertyRef Name="Makhoa" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLDEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="tblKhoas" EntityType="Self.tblKhoa" />
+          <EntitySet Name="tblMonHocs" EntityType="Self.tblMonHoc" />
+          <EntitySet Name="tblSinhViens" EntityType="Self.tblSinhVien" />
+          <AssociationSet Name="FK_tblSinhVien_tblKhoa" Association="Self.FK_tblSinhVien_tblKhoa">
+            <End Role="tblKhoa" EntitySet="tblKhoas" />
+            <End Role="tblSinhVien" EntitySet="tblSinhViens" />
+          </AssociationSet>
+          <EntitySet Name="tblDiems" EntityType="QLDModel.tblDiem" />
+          <AssociationSet Name="FK_tblDiem_tblMonHoc" Association="QLDModel.FK_tblDiem_tblMonHoc">
+            <End Role="tblMonHoc" EntitySet="tblMonHocs" />
+            <End Role="tblDiem" EntitySet="tblDiems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblDiem_tblSinhVien" Association="QLDModel.FK_tblDiem_tblSinhVien">
+            <End Role="tblSinhVien" EntitySet="tblSinhViens" />
+            <End Role="tblDiem" EntitySet="tblDiems" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="tblDiem">
+          <Key>
+            <PropertyRef Name="Mamon" />
+            <PropertyRef Name="MaSV" />
+          </Key>
+          <Property Name="Mamon" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="MaSV" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="Diem" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="tblMonHoc" Relationship="QLDModel.FK_tblDiem_tblMonHoc" FromRole="tblDiem" ToRole="tblMonHoc" />
+          <NavigationProperty Name="tblSinhVien" Relationship="QLDModel.FK_tblDiem_tblSinhVien" FromRole="tblDiem" ToRole="tblSinhVien" />
+        </EntityType>
+        <Association Name="FK_tblDiem_tblMonHoc">
+          <End Type="QLDModel.tblMonHoc" Role="tblMonHoc" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="QLDModel.tblDiem" Role="tblDiem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMonHoc">
+              <PropertyRef Name="Mamon" />
+            </Principal>
+            <Dependent Role="tblDiem">
+              <PropertyRef Name="Mamon" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblDiem_tblSinhVien">
+          <End Type="QLDModel.tblSinhVien" Role="tblSinhVien" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="QLDModel.tblDiem" Role="tblDiem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblSinhVien">
+              <PropertyRef Name="MaSV" />
+            </Principal>
+            <Dependent Role="tblDiem">
+              <PropertyRef Name="MaSV" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QLDModelStoreContainer" CdmEntityContainer="QLDEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="QLDModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblKhoas">
+            <EntityTypeMapping TypeName="QLDModel.tblKhoa">
+              <MappingFragment StoreEntitySet="tblKhoa">
+                <ScalarProperty Name="Makhoa" ColumnName="Makhoa" />
+                <ScalarProperty Name="Tenkhoa" ColumnName="Tenkhoa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblMonHocs">
+            <EntityTypeMapping TypeName="QLDModel.tblMonHoc">
+              <MappingFragment StoreEntitySet="tblMonHoc">
+                <ScalarProperty Name="Mamon" ColumnName="Mamon" />
+                <ScalarProperty Name="Tenmon" ColumnName="Tenmon" />
+                <ScalarProperty Name="Makhoa" ColumnName="Makhoa" />
+                <ScalarProperty Name="Sohocphan" ColumnName="Sohocphan" />
+                <ScalarProperty Name="Giaovien" ColumnName="Giaovien" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblSinhViens">
+            <EntityTypeMapping TypeName="QLDModel.tblSinhVien">
+              <MappingFragment StoreEntitySet="tblSinhVien">
+                <ScalarProperty Name="MaSV" ColumnName="MaSV" />
+                <ScalarProperty Name="Hoten" ColumnName="Hoten" />
+                <ScalarProperty Name="Ngaysinh" ColumnName="Ngaysinh" />
+                <ScalarProperty Name="Noisinh" ColumnName="Noisinh" />
+                <ScalarProperty Name="Gioitinh" ColumnName="Gioitinh" />
+                <ScalarProperty Name="Diachi" ColumnName="Diachi" />
+                <ScalarProperty Name="Makhoa" ColumnName="Makhoa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblDiems">
+            <EntityTypeMapping TypeName="QLDModel.tblDiem">
+              <MappingFragment StoreEntitySet="tblDiem">
+                <ScalarProperty Name="Diem" ColumnName="Diem" />
+                <ScalarProperty Name="MaSV" ColumnName="MaSV" />
+                <ScalarProperty Name="Mamon" ColumnName="Mamon" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
